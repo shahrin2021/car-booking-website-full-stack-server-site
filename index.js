@@ -83,7 +83,36 @@ async function run (){
                     console.log(result)
                     res.json(result);
 
-                })
+                });
+
+                app.get('/carsercives/:id', async(req, res)=>{
+              
+                    const id = req.params.id;
+                    const query = {_id: ObjectId(id)};
+                    const service= await carCollection.findOne(query);
+                    res.json(service)
+         
+                 });
+
+                app.put('/carsercives/:id', async (req, res)=>{
+                  const id = req.params.id;
+                  console.log(id)
+                  const updateSercice = req.body;
+                  console.log(updateSercice)
+                  const query= {_id: ObjectId(id)}
+                  const options={ upsert: true };
+                  const updateDoc = {
+                      $set:{
+                          name:updateSercice.name,
+                          price:updateSercice.price
+                      }
+                  }
+                  
+                  const result = await carCollection.updateOne(query, updateDoc, options );
+                  res.json(result)
+                   
+                });
+        
 
 
 
